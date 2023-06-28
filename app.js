@@ -51,3 +51,7 @@ app.listen(port, (req, res)=>{
 console.log('servidor en ',port)
 })
 
+
+app.use((req, res, next) => {
+    res.status(404).render("404")
+})
