@@ -14,44 +14,43 @@ app.use(session({
     saveUninitialized: true
 }))
 
-let auth = (req, res, next) => {
-    if (req.session && req.session.logged == true){
-        return next()
-    } else {
-        return res.sendStatus(401)
-    }
-}
 
-app.get('/login', (req, res) => {
-    if(!req.query.user || !req.query.pass){
-        res.send('Login fallido')
-    } else if (req.query.pass == "12345678"){
-        req.session.user = req.query.user
-        req.session.logged = true
-        res.send("Login correcto");
-    } else{
-                res.send("contraseña incorrecta")
 
-    }
+// app.get('/login', (req, res) => {
+//     if(!req.query.user || !req.query.pass){
+//         res.send('Login fallido')
+//     } else if (req.query.pass == "12345678"){
+//         req.session.user = req.query.user
+//         req.session.logged = true
+//         res.send("Login correcto");
+//     } else{
+//                 res.send("contraseña incorrecta")
+
+//     }
     
-});
+// });
 
-app.get('/logout', function (req, res) {
-    req.session.destroy();
-    res.send("logout success!");
-  });
+// app.get('/logout', function (req, res) {
+//     req.session.destroy();
+//     res.send("logout success!");
+//   });
 
-  app.get('/home', (req,res)=>{
-    res.render('home')
-  })
-  app.get('/yamete', auth, (req, res) =>{
-    res.send("Yamete Kudasai Onichan")
-  })
+//   app.get('/home', (req,res)=>{
+//     res.render('home')
+//   })
+//   app.get('/yamete', auth, (req, res) =>{
+//     res.send("Yamete Kudasai Onichan")
+//   })
+
+  app.use(require('./routes/routes'))
+
 app.listen(port, (req, res)=>{
 console.log('servidor en ',port)
 })
 
 
+
 app.use((req, res, next) => {
     res.status(404).render("404")
 })
+
