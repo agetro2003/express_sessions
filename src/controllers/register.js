@@ -1,7 +1,8 @@
-const pool = require('pg');
 const nodemailer = require('nodemailer');
-const bcrypt = require('bcryptjs');
-const { json } = require('express');
+const crypto = require('crypto')
+const algorithm = "aes-256-cbc"
+const initVector = crypto.randomBytes(16)
+const SecurityKey = crypto.randomBytes(32)
 
 var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -13,25 +14,23 @@ var transporter = nodemailer.createTransport({
 
 
 const register = async(req, res) => {
+    res.send(initVector + " y la otra es " + SecurityKey)
+
     try {
         
     const { nombre, email, password } = req.body;
-
     let data = {
         nombre: nombre, 
         email: email, 
         password: password
     }
 
-    let token = await bcrypt.hash(JSON.stringify(data), 8)
-    let validation = await bcrypt.compare(JSON.stringify(data), token)
     var mailOptions = {
         from: 'eduardoeg002@gmail.com',
         to: email,
         subject: 'Gay',
         text: 'Eres marico',
-        html: `<h1> ${token} </h1>
-                <p> ${validation} </p>`
+        
     };
 
     transporter.sendMail(mailOptions, function (error, info) {

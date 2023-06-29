@@ -10,22 +10,14 @@ let auth = (req, res, next) => {
     }
 }
 
-router.get('/login', (req, res) => {
-    if (!req.query.user || !req.query.pass) {
-        res.send('Login fallido')
-    } else if (req.query.pass == "12345678") {
-        req.session.user = req.query.user
-        req.session.logged = true
-        res.send("Login correcto");
-    } else {
-        res.send("contraseña incorrecta")
+router.post('/ref', (req, res) => {
+    const {method, cla} = req.body
+    let c = require(`../controllers/${cla}`)
+    let i = new c
+    i[method](req,res)
 
-    }
 })
-router.get('/logout', function (req, res) {
-    req.session.destroy();
-    res.send("logout success!");
-});
+
 
 
 router.get('/home', (req, res) => {

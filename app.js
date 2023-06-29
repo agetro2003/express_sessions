@@ -6,16 +6,20 @@ const port = 3000
 const app = express();
 
 app.set('view engine', 'ejs')
-app.set('views', __dirname+'/views')
-app.use(express.static(__dirname+"/public"))
+app.set('views', __dirname+'/src/views')
+app.use(express.static(__dirname+"/src/public"))
 app.use(express.json());
 app.use(express.urlencoded({extended: false}))
 
 app.use(session({
     secret: '1234567890',
-    resave: true,
-    saveUninitialized: true
-}))
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60
+      
+    }
+  }))
 
 
 
@@ -45,7 +49,7 @@ app.use(session({
 //     res.send("Yamete Kudasai Onichan")
 //   })
 
-  app.use(require('./routes/routes'))
+  app.use(require('./src/routes/routes'))
 
 app.listen(port, (req, res)=>{
 console.log('servidor en ',port)
