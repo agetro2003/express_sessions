@@ -2,12 +2,12 @@ let form = document.getElementById("loginForm")
 form.addEventListener("submit", async(e)=>{
     e.preventDefault()
     let data  = {
-        cla: "SessionHandler",
-        method: "login",
+        nombre: form.user.value,
         email: form.email.value,
         pass: form.pass.value
     }
-    const response = await fetch(`http://localhost:3000/ref`, {
+    console.log("data", data)
+    const response = await fetch(`http://localhost:3000/register`, {
         method: "POST",
         mode: "cors",
         headers: {
@@ -15,10 +15,7 @@ form.addEventListener("submit", async(e)=>{
           },
         body: JSON.stringify(data)
     })
-    console.log(response.status)
-    if (response.status == 200) {
-        window.location.href = "http://localhost:3000/yamete";        
-    }
-})
 
+    console.log(response)
+})
 

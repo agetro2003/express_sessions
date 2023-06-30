@@ -12,6 +12,7 @@ let auth = (req, res, next) => {
 
 router.post('/ref', (req, res) => {
     const {method, cla} = req.body
+    console.log(req.body)
     let c = require(`../controllers/${cla}`)
     let i = new c
     i[method](req,res)
@@ -22,6 +23,9 @@ router.post('/ref', (req, res) => {
 
 router.get('/home', (req, res) => {
     res.render('home')
+})
+router.get('/register', (req, res) => {
+    res.render('register')
 })
 router.get('/yamete', auth, (req, res) => {
     res.send("Yamete Kudasai Onichan")

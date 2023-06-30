@@ -1,17 +1,21 @@
+const pool = require('../database/pool');
+
 class SessionHandler {
-    constructor(){
+    constructor(){}
 
-    }
-
-    login(req, res) {
-        if (!req.query.user || !req.query.pass) {
-            res.send('Login fallido')
-        } else if (req.query.pass == "12345678") {
-            req.session.user = req.query.user
+    async login(req, res) {
+        const response = await pool.query(`select * from session where correo = '${req.body.email}'`)
+        let user = response.rows[0]
+        
+        
+          if (!user || !user.pswd) {
+            res.sendStatus(401)
+        } else if (req.body.pass.trim() === user.pswd.trim()) {
+            req.session.user = user.usuario
             req.session.logged = true
-            res.send("Login correcto");
+            res.sendStatus(200);
         } else {
-            res.send("contraseña incorrecta")
+            res.sendStatus(401)
     
         }
     }

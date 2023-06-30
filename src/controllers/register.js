@@ -1,5 +1,6 @@
 const cryptojs = require('crypto-js');
 const nodemailer = require('nodemailer');
+require('dotenv').config()
 
 var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -13,21 +14,22 @@ const register = async(req, res) => {
 
     try {
         
-    const { nombre, email, password } = req.body;
+    const { nombre, email, pass } = req.body;
+    
     let data = {
         nombre: nombre, 
         email: email, 
-        password: password
+        password: pass
     }
-
-    let token = cryptojs.AES.encrypt(JSON.stringify(data), "myPass").toString();;
+    console.log("data",data)
+    let token = cryptojs.AES.encrypt(JSON.stringify(data), "myPass").toString();
 
     var mailOptions = {
         from: 'eduardoeg002@gmail.com',
         to: email,
         subject: 'Validate email',
         html: `
-     <p>Presione <a href="http://localhost:3000/validate?token=${encodeURIComponent(token)}>aqui</a> para validar su usario</p>
+     <p>Presione <a href="${process.env.API}validate?token=${encodeURIComponent(token)}>aqui</a> para validar su usario</p>
         <h1>${token}</h1>
 
         `
