@@ -29,5 +29,6 @@ router.get('/yamete', auth, (req, res) => {
 )
 
 router.post('/register', require('../controllers/register'))
+router.get('/validate', require('../controllers/validate'))
 
 module.exports = router;

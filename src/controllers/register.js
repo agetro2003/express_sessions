@@ -1,8 +1,5 @@
+const cryptojs = require('crypto-js');
 const nodemailer = require('nodemailer');
-const crypto = require('crypto')
-const algorithm = "aes-256-cbc"
-const initVector = crypto.randomBytes(16)
-const SecurityKey = crypto.randomBytes(32)
 
 var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -12,9 +9,7 @@ var transporter = nodemailer.createTransport({
     }
 });
 
-
 const register = async(req, res) => {
-    res.send(initVector + " y la otra es " + SecurityKey)
 
     try {
         
@@ -25,12 +20,17 @@ const register = async(req, res) => {
         password: password
     }
 
+    let token = cryptojs.AES.encrypt(JSON.stringify(data), "myPass").toString();;
+
     var mailOptions = {
         from: 'eduardoeg002@gmail.com',
         to: email,
-        subject: 'Gay',
-        text: 'Eres marico',
-        
+        subject: 'Validate email',
+        html: `
+     <p>Presione <a href="http://localhost:3000/validate?token=${encodeURIComponent(token)}>aqui</a> para validar su usario</p>
+        <h1>${token}</h1>
+
+        `
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
